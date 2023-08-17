@@ -14,8 +14,8 @@ function divideNumbers (num1,num2){
     return num1/num2;
 }
 
-let firstNum;
-let secondNum;
+let firstNum = "";
+let secondNum = "";
 let operator = "";
 
 function operate (operator, firstNum, secondNum){
