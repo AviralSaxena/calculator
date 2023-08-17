@@ -1,38 +1,28 @@
-function addNumbers (num1,num2){
-    return num1+num2;
-};
+const numberButtons = document.querySelectorAll('.numbers');
+const operatorButtons = document.querySelectorAll('.operators');
+const displayContainer = document.getElementById('display');
+let currentInput = "";
 
-function subtractNumbers (num1,num2){
-    return num1-num2;
-}
+numberButtons.forEach(button => {
+    button.addEventListener('click',()=>{
+        currentInput += button.textContent;
+        displayContainer.textContent = currentInput;
+    });
+})
 
-function multiplyNumbers (num1,num2){
-    return num1*num2;
-}
+operatorButtons.forEach(button => {
+    button.addEventListener('click',()=>{
+        currentInput += button.textContent;
+        displayContainer.textContent = currentInput;
+    });
+})
 
-function divideNumbers (num1,num2){
-    return num1/num2;
-}
-
-let firstNum = "";
-let secondNum = "";
-let operator = "";
-
-function operate (operator, firstNum, secondNum){
-    switch (operator){
-        case '+':
-            addNumbers(firstNum,secondNum);
-            break
-        case '-':
-            subtractNumbers(firstNum,secondNum);
-            break
-        case '*':
-            multiplyNumbers(firstNum,secondNum);
-            break
-        case '/':
-            divideNumbers(firstNum,secondNum);
-            break
-        default:
-            return "Syntax Error";
+function updateDisplay() {
+    if (currentInput.length === 0) {
+        displayContainer.textContent = "";
+    } else if (currentInput[currentInput.length - 1] === ' ') {
+        displayContainer.textContent = currentInput.trim();
+    } else {
+        displayContainer.textContent = currentInput;
     }
 }

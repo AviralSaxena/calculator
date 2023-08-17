@@ -3,17 +3,18 @@
 <head>
     <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
-    <script src = "script.js"></script>
 </head>
 <body>
     <div id="phone-mockup">
         <div id="notch"></div>
 
         <div id="calculator">
-            
-            <div id="display-history">History</div>
-            <div id="display">Results</div>
-
+            <div id="display-history-container">                                <!-- To handle overflow -->
+                <div id="display-history">History</div>
+            </div>
+            <div id="display-container">                                        <!-- To handle overflow -->
+                <div id="display">Result</div>
+            </div>
             <button class = "clear-button">AC</button>
             <button class = "delete-button">Del</button>
 
@@ -36,9 +37,11 @@
             <button class = "numbers">0</button>
             <button class = "equals-button">=</button>
             <button class = "operators">+</button>
+            
         </div>
 
         <div id="home-slider"></div>
     </div>
 </body>
+<script src = "script.js"></script>
 </html>

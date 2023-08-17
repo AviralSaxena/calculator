@@ -39,14 +39,16 @@ body{
     margin-top: auto;
 }
 
-#display-history,
-#display{
+#display-container,
+#display-history-container{
+    text-align: right;
     margin: 5px;
     width: 270px;
-    overflow:hidden;
+    overflow-x: scroll;
     white-space: nowrap;
-    direction: rtl;
-    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
 }
 
 #display-history{
