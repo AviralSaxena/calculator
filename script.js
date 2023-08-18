@@ -5,15 +5,19 @@ let operator = "";
 function operate (operator, firstNum, secondNum){
     switch (operator){
         case '+':
-            return firstNum+secondNum;
+            return round(firstNum+secondNum);
         case '-':
-            return firstNum-secondNum;
+            return round(firstNum-secondNum);
         case 'x':
-            return firstNum*secondNum;
+            return round(firstNum*secondNum);
         case '÷':
             if (secondNum==0) return null;
-            return firstNum/secondNum;
+            return round(firstNum/secondNum);
     }
+}
+
+function round(operation){
+    return Math.round(operation * 1000) / 1000;
 }
 
 const numberButtons = document.querySelectorAll('.numbers');
