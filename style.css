@@ -17,7 +17,7 @@ body{
     height: 600px;
     border: 5px solid silver;
     border-radius: 50px;
-    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.4);
     background-color: black;
     display: flex;
     flex-direction: column;
@@ -70,8 +70,8 @@ button{
     justify-content: space-evenly;
 }
 
-.clear-button,
-.delete-button
+#clear-button,
+#delete-button
 {
     height: 60px;
     width: 130px;
@@ -86,8 +86,8 @@ button{
 }
 
 .numbers,
-.equals-button,
-.point-button{
+#equals-button,
+#point-button{
     background-color: #303131;
 }
 
