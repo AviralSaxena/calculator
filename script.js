@@ -13,45 +13,75 @@ const deleteButton = document.getElementById('delete-button');
 const pointButton = document.getElementById('point-button');
 const equalsButton = document.getElementById('equals-button');
 
+document.addEventListener('keydown', (event) =>{
+    const key = event.key;
+
+    if (!isNaN(key)) handleNumber(key);
+    if (['+', '-', '*', '/', '='].includes(key)) handleOperator(convertOperator(key));
+    if (key === '.') handlePoint();
+    if (key === 'Backspace') handleDelete();
+    if (key === 'Enter') handleEquals();
+    if (['Escape', 'c', 'C'].includes(key)) handleClear();
+})
+
 numberButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        if (currentDisplay == 0) currentDisplay = '';
-        currentDisplay += button.textContent;
-        displayContainer.textContent = currentDisplay;
-    });
+    button.addEventListener('click', () => handleNumber(button.textContent));
 })
 
 operatorButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        if (currentDisplay === "") return;
-        if (operator === "") {
-            firstNum = currentDisplay;
-            operator = button.textContent;
-            currentHistory = currentDisplay + " " + operator;
-        }
-        else {
-            secondNum = currentDisplay;
-            let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
-            if (result == null) {
-                displayContainer.textContent = "🤦";
-                currentHistory = "";
-                        operator = "";
-                        currentDisplay = "";
-            }
-            else {
-                displayContainer.textContent = result;
-                currentHistory = result + " " + button.textContent;
-                firstNum = result;
-                secondNum = "";
-                operator = button.textContent;
-            }
-        }
-        displayHistoryContainer.textContent = currentHistory;
-        currentDisplay = "";
-    });
+    button.addEventListener('click', () => handleOperator(button.textContent));
 });
 
-clearButton.addEventListener('click', () => {
+clearButton.addEventListener('click', handleClear);
+
+deleteButton.addEventListener('click', handleDelete);
+
+pointButton.addEventListener('click', handlePoint);
+
+equalsButton.addEventListener('click', handleEquals);
+
+function convertOperator(key) {
+    if (key === '/') return '÷'
+    if (key === '*') return 'x'
+    if (key === '-') return '-'
+    if (key === '+') return '+'
+}
+
+function handleNumber(key){
+    if (currentDisplay == 0) currentDisplay = '';
+    currentDisplay += key;
+    displayContainer.textContent = currentDisplay;
+};
+
+function handleOperator(key){
+    if (currentDisplay === "") return;
+    if (operator === "") {
+        firstNum = currentDisplay;
+        operator = key;
+        currentHistory = currentDisplay + " " + operator;
+    }
+    else {
+        secondNum = currentDisplay;
+        let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
+        if (result == null) {
+            displayContainer.textContent = "🤦";
+            currentHistory = "";
+            operator = "";
+            currentDisplay = "";
+        }
+        else {
+            displayContainer.textContent = result;
+            currentHistory = result + " " + key;
+            firstNum = result;
+            secondNum = "";
+            operator = key;
+        }
+    }
+    displayHistoryContainer.textContent = currentHistory;
+    currentDisplay = "";
+}
+
+function handleClear(){
     displayContainer.textContent = 0;
     displayHistoryContainer.textContent = "";
     currentDisplay = "";
@@ -59,27 +89,26 @@ clearButton.addEventListener('click', () => {
     operator = "";
     firstNum = "";
     secondNum = "";
-});
+}
 
-
-deleteButton.addEventListener('click', () => {
+function handleDelete(){
     currentDisplay = currentDisplay.slice(0, -1);
-    if (currentDisplay.length == 0) {
+    if (currentDisplay.length === 0) {
         displayContainer.textContent = 0;
     } else {
         displayContainer.textContent = currentDisplay;
     }
-});
+}
 
-pointButton.addEventListener('click', () => {
+function handlePoint(){
     if (displayContainer.textContent.includes('.')) return;
     else {
         currentDisplay += '.';
         displayContainer.textContent = currentDisplay;
     }
-});
+}
 
-equalsButton.addEventListener('click', () => {
+function handleEquals(){
     if (operator === "" || currentDisplay === "") return;
     secondNum = currentDisplay;
     let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
@@ -95,10 +124,9 @@ equalsButton.addEventListener('click', () => {
         secondNum = "";
         operator = "";
     }
-
     displayHistoryContainer.textContent = currentHistory;
     currentDisplay = result;
-});
+}
 
 function operate(operator, firstNum, secondNum) {
     switch (operator) {
