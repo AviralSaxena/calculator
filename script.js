@@ -17,10 +17,10 @@ document.addEventListener('keydown', (event) =>{
     const key = event.key;
 
     if (!isNaN(key)) handleNumber(key);
-    if (['+', '-', '*', '/', '='].includes(key)) handleOperator(convertOperator(key));
+    if (['+', '-', '*', '/'].includes(key)) handleOperator(convertOperator(key));
     if (key === '.') handlePoint();
-    if (key === 'Backspace') handleDelete();
-    if (key === 'Enter') handleEquals();
+    if (['Backspace', 'Del'].includes(key)) handleDelete();
+    if (['Enter', '='].includes(key)) handleEquals();
     if (['Escape', 'c', 'C'].includes(key)) handleClear();
 })
 
