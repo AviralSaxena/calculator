@@ -92,11 +92,10 @@ function handleClear(){
 }
 
 function handleDelete(){
-    currentDisplay = currentDisplay.slice(0, -1);
-    if (currentDisplay.length === 0) {
+    if (displayContainer.textContent.length === 1) {
         displayContainer.textContent = 0;
     } else {
-        displayContainer.textContent = currentDisplay;
+        currentDisplay = displayContainer.textContent = displayContainer.textContent.slice(0, -1);
     }
 }
 
@@ -114,9 +113,11 @@ function handleEquals(){
     let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
     if (result == null) {
         displayContainer.textContent = "🤦";
+        displayHistoryContainer.textContent ="";
         currentHistory = "";
         operator = "";
         currentDisplay = "";
+        return;
     } else {
         displayContainer.textContent = result;
         currentHistory = currentHistory + ' ' + currentDisplay + ' = ';
