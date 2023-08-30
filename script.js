@@ -1,8 +1,6 @@
 let firstNum = "";
 let secondNum = "";
-let operator = "";
-let currentDisplay = "";
-let currentHistory = "";
+let operator = null;
 
 const numberButtons = document.querySelectorAll('.numbers');
 const operatorButtons = document.querySelectorAll('.operators');
@@ -17,11 +15,11 @@ document.addEventListener('keydown', (event) =>{
     const key = event.key;
 
     if (!isNaN(key)) handleNumber(key);
-    if (['+', '-', '*', '/'].includes(key)) handleOperator(convertOperator(key));
-    if (key === '.') handlePoint();
-    if (['Backspace', 'Del'].includes(key)) handleDelete();
-    if (['Enter', '='].includes(key)) handleEquals();
-    if (['Escape', 'c', 'C'].includes(key)) handleClear();
+    else if (['+', '-', '*', '/'].includes(key)) handleOperator(convertOperator(key));
+    else if (key === '.') handlePoint();
+    else if (['BACKSPACE', 'DELETE'].includes(key)) handleDelete();
+    else if (['ENTER', '='].includes(key)) evaluate();
+    else if (['ESCAPE', 'c', 'C'].includes(key)) handleClear();
 })
 
 numberButtons.forEach(button => {
@@ -38,57 +36,35 @@ deleteButton.addEventListener('click', handleDelete);
 
 pointButton.addEventListener('click', handlePoint);
 
-equalsButton.addEventListener('click', handleEquals);
+equalsButton.addEventListener('click', evaluate);
 
 function convertOperator(key) {
-    if (key === '/') return '÷'
-    if (key === '*') return 'x'
-    if (key === '-') return '-'
-    if (key === '+') return '+'
+    if (key === '/') return '÷';
+    if (key === '*') return 'x';
+    if (key === '-') return '-';
+    if (key === '+') return '+';
 }
 
 function handleNumber(key){
-    if (currentDisplay == 0) currentDisplay = '';
-    currentDisplay += key;
-    displayContainer.textContent = currentDisplay;
+    if (displayContainer.textContent==='0'|| displayContainer.textContent==='🤦') displayContainer.textContent = '';
+    displayContainer.textContent += key;
 };
 
 function handleOperator(key){
-    if (currentDisplay === "") return;
-    if (operator === "") {
-        firstNum = currentDisplay;
+    if (operator !== "") evaluate();
+    if (displayContainer.textContent!=='🤦'){
+        firstNum = displayContainer.textContent;
         operator = key;
         currentHistory = currentDisplay + " " + operator;
     }
-    else {
-        secondNum = currentDisplay;
-        let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
-        if (result == null) {
-            displayContainer.textContent = "🤦";
-            currentHistory = "";
-            operator = "";
-            currentDisplay = "";
-        }
-        else {
-            displayContainer.textContent = result;
-            currentHistory = result + " " + key;
-            firstNum = result;
-            secondNum = "";
-            operator = key;
-        }
-    }
-    displayHistoryContainer.textContent = currentHistory;
-    currentDisplay = "";
 }
 
 function handleClear(){
-    displayContainer.textContent = 0;
-    displayHistoryContainer.textContent = "";
-    currentDisplay = "";
-    currentHistory = "";
-    operator = "";
-    firstNum = "";
-    secondNum = "";
+    displayContainer.textContent = '0';
+    displayHistoryContainer.textContent = '';
+    operator = '';
+    firstNum = '';
+    secondNum = '';
 }
 
 function handleDelete(){
@@ -107,42 +83,33 @@ function handlePoint(){
     }
 }
 
-function handleEquals(){
-    if (operator === "" || currentDisplay === "") return;
-    secondNum = currentDisplay;
-    let result = operate(operator, parseFloat(firstNum), parseFloat(secondNum));
-    if (result == null) {
+function evaluate(){
+    if (operator === null) return;
+    if (operator === '÷' && displayContainer.textContent === '0'){
+        displayHistoryContainer.textContent = null;
         displayContainer.textContent = "🤦";
-        displayHistoryContainer.textContent ="";
-        currentHistory = "";
-        operator = "";
-        currentDisplay = "";
+        operator = '';
         return;
-    } else {
-        displayContainer.textContent = result;
-        currentHistory = currentHistory + ' ' + currentDisplay + ' = ';
-        firstNum = result;
-        secondNum = "";
-        operator = "";
     }
-    displayHistoryContainer.textContent = currentHistory;
-    currentDisplay = result;
+    secondNum = displayContainer.textContent;
+    displayContainer.textContent = round(operate(operator, parseFloat(firstNum), parseFloat(secondNum)));
+    displayHistoryContainer.textContent = `${firstNum} ${operator} ${secondNum} =`;
+    operator = null;
 }
 
 function operate(operator, firstNum, secondNum) {
     switch (operator) {
         case '+':
-            return round(firstNum + secondNum);
+            return firstNum + secondNum;
         case '-':
-            return round(firstNum - secondNum);
+            return firstNum - secondNum;
         case 'x':
-            return round(firstNum * secondNum);
+            return firstNum * secondNum;
         case '÷':
-            if (secondNum == 0) return null;
-            return round(firstNum / secondNum);
+            return firstNum / secondNum;
     }
 }
 
-function round(operation) {
-    return Math.round(operation * 1000) / 1000;
+function round(num) {
+    return Math.round(num * 1000) / 1000;
 }
